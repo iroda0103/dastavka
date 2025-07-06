@@ -40,18 +40,7 @@ export declare class UsersController {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    findOne(telegramId: string): Promise<{
-        id: number;
-        name: string;
-        phone: string;
-        password: string;
-        address: string;
-        role: "admin" | "restaurant" | "client" | "driver" | "chef";
-        telegramId: string;
-        cityId: number;
-        createdAt: Date;
-        updatedAt: Date;
-    }[]>;
+    findOne(telegramId: string): Promise<{}>;
     findById(id: string): Promise<{
         id: number;
         name: string;

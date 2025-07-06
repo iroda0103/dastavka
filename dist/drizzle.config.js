@@ -7,6 +7,7 @@ exports.default = (0, drizzle_kit_1.defineConfig)({
     schema: './src/database/schema.ts',
     dbCredentials: {
         url: process.env.DATABASE_URL,
+        ssl: true,
     },
 });
 //# sourceMappingURL=drizzle.config.js.map

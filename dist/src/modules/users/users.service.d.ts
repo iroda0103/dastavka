@@ -55,18 +55,7 @@ export declare class UsersService {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    findOne(telegramId: string): Promise<{
-        id: number;
-        name: string;
-        phone: string;
-        password: string;
-        address: string;
-        role: "admin" | "restaurant" | "client" | "driver" | "chef";
-        telegramId: string;
-        cityId: number;
-        createdAt: Date;
-        updatedAt: Date;
-    }[]>;
+    findOne(telegramId: string): Promise<{}>;
     update(id: number, updateUserDto: UpdateUserDto): Promise<{
         id: number;
         name: string;

@@ -141,15 +141,13 @@ let UsersService = class UsersService {
                 .where((0, drizzle_orm_1.eq)(schema_1.users.telegramId, telegramId));
             if (!user.length) {
                 this.logger.warn(`User with Telegram ID ${telegramId} not found`);
-                throw new common_1.NotFoundException({ message: 'User not found' });
+                return {};
             }
-            this.logger.debug(`Found user: ${user[0].name}, role: ${user[0].role}`);
-            return user;
+            const foundUser = user[0];
+            this.logger.debug(`Found user: ${foundUser.name}, role: ${foundUser.role}`);
+            return foundUser;
         }
         catch (error) {
-            if (error instanceof common_1.NotFoundException) {
-                throw error;
-            }
             this.logger.error(`Failed to find user with Telegram ID ${telegramId}: ${error.message}`, error.stack);
             throw new common_1.BadRequestException(`Failed to find user with Telegram ID: ${error.message}`);
         }

@@ -161,33 +161,58 @@ export class UsersService {
     }
   }
 
-  async findOne(telegramId: string) {
-    this.logger.log(`Finding user with Telegram ID: ${telegramId}`);
+  // async findOne(telegramId: string) {
+  //   this.logger.log(`Finding user with Telegram ID: ${telegramId}`);
 
-    try {
-      const user = await this.databaseService.db
-        .select()
-        .from(users)
-        .where(eq(users.telegramId, telegramId)); 
+  //   try {
+  //     const user = await this.databaseService.db
+  //       .select()
+  //       .from(users)
+  //       .where(eq(users.telegramId, telegramId)); 
 
-      if (!user.length) {
-        this.logger.warn(`User with Telegram ID ${telegramId} not found`);
-        throw new NotFoundException({ message: 'User not found' });
-      }
+  //     if (!user.length) {
+  //       this.logger.warn(`User with Telegram ID ${telegramId} not found`);
+  //       throw new NotFoundException({ message: 'User not found' });
+  //     }
 
-      this.logger.debug(`Found user: ${user[0].name}, role: ${user[0].role}`);
-      return user;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      this.logger.error(
-        `Failed to find user with Telegram ID ${telegramId}: ${error.message}`,
-        error.stack,
-      );
-      throw new BadRequestException(`Failed to find user with Telegram ID: ${error.message}`);
+  //     this.logger.debug(`Found user: ${user[0].name}, role: ${user[0].role}`);
+  //     return user;
+  //   } catch (error) {
+  //     if (error instanceof NotFoundException) {
+  //       throw error;
+  //     }
+  //     this.logger.error(
+  //       `Failed to find user with Telegram ID ${telegramId}: ${error.message}`,
+  //       error.stack,
+  //     );
+  //     throw new BadRequestException(`Failed to find user with Telegram ID: ${error.message}`);
+  //   }
+  // }
+async findOne(telegramId: string) {
+  this.logger.log(`Finding user with Telegram ID: ${telegramId}`);
+
+  try {
+    const user = await this.databaseService.db
+      .select()
+      .from(users)
+      .where(eq(users.telegramId, telegramId));
+
+    if (!user.length) {
+      this.logger.warn(`User with Telegram ID ${telegramId} not found`);
+      return {}; // yoki null — agar bo‘sh obyekt emas, null qaytarmoqchi bo‘lsangiz
     }
+
+    const foundUser = user[0];
+    this.logger.debug(`Found user: ${foundUser.name}, role: ${foundUser.role}`);
+    return foundUser;
+  } catch (error) {
+    this.logger.error(
+      `Failed to find user with Telegram ID ${telegramId}: ${error.message}`,
+      error.stack,
+    );
+    throw new BadRequestException(`Failed to find user with Telegram ID: ${error.message}`);
   }
+}
 
   // In your users.service.ts update method
   async update(id: number, updateUserDto: UpdateUserDto) {
