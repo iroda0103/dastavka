@@ -61,7 +61,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getOnlyRestaurants", null);
 __decorate([
-    (0, common_1.UseGuards)(auth_guard_1.IsLoggedIn, new auth_guard_1.HasRole(['admin', 'restaurant'])),
+    (0, common_1.UseGuards)(),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('role')),
     __param(1, (0, common_1.Query)('telegramId')),

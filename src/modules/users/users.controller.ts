@@ -30,8 +30,8 @@ export class UsersController {
   getOnlyRestaurants() {
     return this.usersService.getOnlyRestaurants();
   }
-
-  @UseGuards(IsLoggedIn,new HasRole(['admin', 'restaurant']))
+// IsLoggedIn,new HasRole(['admin', 'restaurant'])
+  @UseGuards()
   @Get()
   findAll(
     @Query('role') role: string,
