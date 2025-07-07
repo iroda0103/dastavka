@@ -139,12 +139,7 @@ let UsersService = class UsersService {
                 .select()
                 .from(schema_1.users)
                 .where((0, drizzle_orm_1.eq)(schema_1.users.telegramId, telegramId));
-            if (!user.length) {
-                this.logger.warn(`User with Telegram ID ${telegramId} not found`);
-                return {};
-            }
-            const foundUser = user[0];
-            this.logger.debug(`Found user: ${foundUser.name}, role: ${foundUser.role}`);
+            const foundUser = user[0] ? user[0] : {};
             return foundUser;
         }
         catch (error) {

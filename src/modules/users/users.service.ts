@@ -197,13 +197,13 @@ async findOne(telegramId: string) {
       .from(users)
       .where(eq(users.telegramId, telegramId));
 
-    if (!user.length) {
-      this.logger.warn(`User with Telegram ID ${telegramId} not found`);
-      return {}; // yoki null — agar bo‘sh obyekt emas, null qaytarmoqchi bo‘lsangiz
-    }
+    // if (!user.length) { 
+    //   this.logger.warn(`User with Telegram ID ${telegramId} not found`);
+    //   return {}; // yoki null — agar bo‘sh obyekt emas, null qaytarmoqchi bo‘lsangiz
+    // }
 
-    const foundUser = user[0];
-    this.logger.debug(`Found user: ${foundUser.name}, role: ${foundUser.role}`);
+    const foundUser = user[0] ? user[0] : {};
+    // this.logger.debug(`Found user: ${foundUser.name}, role: ${foundUser.role}`);
     return foundUser;
   } catch (error) {
     this.logger.error(
