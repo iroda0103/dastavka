@@ -14,10 +14,10 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { HasRole, IsLoggedIn } from '../auth/auth.guard';
 
-@UseGuards(IsLoggedIn)
+// @UseGuards(IsLoggedIn)
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(private readonly ordersService: OrdersService) { }
 
   @UseGuards(new HasRole(['admin', 'client']))
   @Post()
@@ -36,10 +36,11 @@ export class OrdersController {
     return this.ordersService.findAll(restaurantId);
   }
 
-  @UseGuards(new HasRole(['admin', 'client']))
+  // new HasRole(['admin', 'client'])
+  // @UseGuards()
   @Get('my-orders/:userId')
   getMyOrders(@Param('userId') userId: string) {
-    return this.ordersService.getMyOrders(+userId);
+    return this.ordersService.getMyOrders(userId);
   }
 
   @Get(':id')

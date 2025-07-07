@@ -286,7 +286,7 @@ export class OrdersService {
     }
   }
 
-  async getMyOrders(clientId: number) {
+  async getMyOrders(clientId: string) {
     // Single efficient query with multiple joins instead of N+1 separate queries
     const results = await this.databaseService.db
       .select({
@@ -311,7 +311,7 @@ export class OrdersService {
           role: users.role,
         },
         // Restaurant data - using aliased join
-        restaurant: {
+        restaurant: { 
           id: orders.restaurantId,
           name: users.name,
           phone: users.phone,
@@ -322,7 +322,7 @@ export class OrdersService {
         driverId: orders.driverId,
       })
       .from(orders)
-      .where(eq(orders.clientId, clientId))
+      .where(eq(users.telegramId, clientId))
       .leftJoin(users, eq(orders.clientId, users.id))
       // For restaurant data, we need an alias since we're joining the same table
       .leftJoin(restaurants, eq(orders.restaurantId, restaurants.id));

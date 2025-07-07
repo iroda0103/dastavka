@@ -98,7 +98,7 @@ export declare class OrdersService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    getMyOrders(clientId: number): Promise<{
+    getMyOrders(clientId: string): Promise<{
         client: {
             id: number;
             name: string;

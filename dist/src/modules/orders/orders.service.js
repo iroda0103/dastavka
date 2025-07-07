@@ -230,7 +230,7 @@ let OrdersService = OrdersService_1 = class OrdersService {
             driverId: schema_1.orders.driverId,
         })
             .from(schema_1.orders)
-            .where((0, drizzle_orm_1.eq)(schema_1.orders.clientId, clientId))
+            .where((0, drizzle_orm_1.eq)(schema_1.users.telegramId, clientId))
             .leftJoin(schema_1.users, (0, drizzle_orm_1.eq)(schema_1.orders.clientId, schema_1.users.id))
             .leftJoin(schema_1.restaurants, (0, drizzle_orm_1.eq)(schema_1.orders.restaurantId, schema_1.restaurants.id));
         const driverIds = [...new Set(results.map((r) => r.driverId))];

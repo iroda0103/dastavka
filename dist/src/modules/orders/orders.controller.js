@@ -35,7 +35,7 @@ let OrdersController = class OrdersController {
         return this.ordersService.findAll(restaurantId);
     }
     getMyOrders(userId) {
-        return this.ordersService.getMyOrders(+userId);
+        return this.ordersService.getMyOrders(userId);
     }
     findOne(id) {
         return this.ordersService.findOne(+id);
@@ -65,7 +65,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.UseGuards)(new auth_guard_1.HasRole(['admin', 'client'])),
     (0, common_1.Get)('my-orders/:userId'),
     __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
@@ -95,7 +94,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "remove", null);
 exports.OrdersController = OrdersController = __decorate([
-    (0, common_1.UseGuards)(auth_guard_1.IsLoggedIn),
     (0, common_1.Controller)('orders'),
     __metadata("design:paramtypes", [orders_service_1.OrdersService])
 ], OrdersController);
