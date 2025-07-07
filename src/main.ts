@@ -2,19 +2,23 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { CustomLoggerService } from './logger/logger.service';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
   });
 
-  // Get the logger service from the application context
   const logger = app.get(CustomLoggerService);
-
-  // Set the logger as the application logger
   app.useLogger(logger);
 
-  // Enable CORS
+  // ✅ uploads papkasini statik qilish
+  app.useStaticAssets(join(process.cwd(), 'uploads'), {
+    prefix: '/uploads/',
+  });
+
+  // CORS
   app.enableCors({
     origin: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
