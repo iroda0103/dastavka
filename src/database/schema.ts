@@ -43,6 +43,11 @@ export const paymentMethodEnum = pgEnum('payment_method', [
   'online',
 ]);
 
+export const deliveryMethodEnum = pgEnum('delivery_method', [
+  'delivery',
+  'pickup'
+])
+
 export const paymentStatusEnum = pgEnum('payment_status', [
   'pending',
   'paid',
@@ -139,6 +144,7 @@ export const menuRelations = relations(menu, ({ many, one }) => ({
 export const orders = pgTable('orders', {
   id: serial('id').primaryKey(),
   address: text('address').notNull(),
+  comment: text('comment'),
   status: orderStatusEnum('status').notNull().default('new'),
   totalPrice: decimal('total_amount', { precision: 10, scale: 2 }).notNull(),
   subtotalPrice: decimal('subtotal_price', {
@@ -146,7 +152,9 @@ export const orders = pgTable('orders', {
     scale: 2,
   }).notNull(),
   isDeleted: boolean('is_deleted').default(false),
+
   discount: integer('discount').default(0),
+  delivery_type: deliveryMethodEnum('delivery_type').notNull().default('delivery'),
   deliveryFee: decimal('delivery_fee', { precision: 10, scale: 2 }).default(
     '0',
   ),

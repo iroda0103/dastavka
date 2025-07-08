@@ -23,7 +23,7 @@ let OrdersService = OrdersService_1 = class OrdersService {
     async create(createOrderDto) {
         this.logger.log(`Creating new order for restaurant ID: ${createOrderDto.restaurantId}`);
         try {
-            const { address, driverId, clientId, restaurantId, items, discount = 0, deliveryFee = 0, } = createOrderDto;
+            const { address, driverId, paymentMethod, deliveryMethod, comment, clientId, restaurantId, items, discount = 0, deliveryFee = 0, } = createOrderDto;
             this.logger.debug(`Order params: client=${clientId}, driver=${driverId}, items=${items.length}`);
             this.logger.debug('Validating participants...');
             await this.validateParticipants(driverId, clientId, restaurantId);
@@ -41,11 +41,17 @@ let OrdersService = OrdersService_1 = class OrdersService {
                     driverId,
                     clientId,
                     restaurantId,
+                    paymentMethod,
+                    deliveryMethod,
+                    comment,
                     subtotalPrice: subtotalPrice.toString(),
                     totalPrice: totalPrice.toString(),
                 };
                 if (createOrderDto.status) {
                     orderValues.status = createOrderDto.status;
+                }
+                if (createOrderDto.paymentMethod) {
+                    orderValues.payment_method = createOrderDto.paymentMethod;
                 }
                 if (createOrderDto.deliveryFee !== undefined) {
                     orderValues.deliveryFee = createOrderDto.deliveryFee;

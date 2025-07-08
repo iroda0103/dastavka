@@ -3,6 +3,7 @@ CREATE TYPE "public"."payment_method" AS ENUM('cash', 'card', 'online');--> stat
 CREATE TYPE "public"."payment_status" AS ENUM('pending', 'paid', 'failed', 'refunded');--> statement-breakpoint
 CREATE TYPE "public"."restaurant_category" AS ENUM('fast_food', 'milliy_taom', 'pizza', 'burger');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('client', 'driver', 'admin', 'restaurant', 'chef');--> statement-breakpoint
+CREATE TYPE "public"."delivery_type" AS ENUM('pickup', 'delivery');--> statement-breakpoint
 CREATE TABLE "cities" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
@@ -54,8 +55,10 @@ CREATE TABLE "orders" (
 	"subtotal_price" numeric(10, 2) NOT NULL,
 	"is_deleted" boolean DEFAULT false,
 	"discount" integer DEFAULT 0,
+	"comment" text ,
 	"delivery_fee" numeric(10, 2) DEFAULT '0',
 	"payment_method" "payment_method" DEFAULT 'cash' NOT NULL,
+	"delivery_type" "delivery_type" DEFAULT 'delivery' NOT NULL,
 	"payment_status" "payment_status" DEFAULT 'pending' NOT NULL,
 	"estimated_delivery_time" timestamp,
 	"delivered_at" timestamp,

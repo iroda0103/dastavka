@@ -18,8 +18,8 @@ import { HasRole, IsLoggedIn } from '../auth/auth.guard';
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) { }
-
-  @UseGuards(new HasRole(['admin', 'client']))
+// new HasRole(['admin', 'client'])
+  @UseGuards()
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
     try {

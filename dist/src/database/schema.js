@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.schema = exports.files = exports.orderItemsRelations = exports.orderItems = exports.ordersRelations = exports.orders = exports.menuRelations = exports.menu = exports.restaurantsRelations = exports.restaurants = exports.usersRelations = exports.users = exports.citiesRelations = exports.cities = exports.paymentStatusEnum = exports.paymentMethodEnum = exports.orderStatusEnum = exports.restaurantCategoryEnum = exports.userRoleEnum = void 0;
+exports.schema = exports.files = exports.orderItemsRelations = exports.orderItems = exports.ordersRelations = exports.orders = exports.menuRelations = exports.menu = exports.restaurantsRelations = exports.restaurants = exports.usersRelations = exports.users = exports.citiesRelations = exports.cities = exports.paymentStatusEnum = exports.deliveryMethodEnum = exports.paymentMethodEnum = exports.orderStatusEnum = exports.restaurantCategoryEnum = exports.userRoleEnum = void 0;
 const pg_core_1 = require("drizzle-orm/pg-core");
 const drizzle_orm_1 = require("drizzle-orm");
 exports.userRoleEnum = (0, pg_core_1.pgEnum)('user_role', [
@@ -29,6 +29,10 @@ exports.paymentMethodEnum = (0, pg_core_1.pgEnum)('payment_method', [
     'cash',
     'card',
     'online',
+]);
+exports.deliveryMethodEnum = (0, pg_core_1.pgEnum)('delivery_method', [
+    'delivery',
+    'pickup'
 ]);
 exports.paymentStatusEnum = (0, pg_core_1.pgEnum)('payment_status', [
     'pending',
@@ -112,6 +116,7 @@ exports.menuRelations = (0, drizzle_orm_1.relations)(exports.menu, ({ many, one 
 exports.orders = (0, pg_core_1.pgTable)('orders', {
     id: (0, pg_core_1.serial)('id').primaryKey(),
     address: (0, pg_core_1.text)('address').notNull(),
+    comment: (0, pg_core_1.text)('comment'),
     status: (0, exports.orderStatusEnum)('status').notNull().default('new'),
     totalPrice: (0, pg_core_1.decimal)('total_amount', { precision: 10, scale: 2 }).notNull(),
     subtotalPrice: (0, pg_core_1.decimal)('subtotal_price', {
@@ -120,6 +125,7 @@ exports.orders = (0, pg_core_1.pgTable)('orders', {
     }).notNull(),
     isDeleted: (0, pg_core_1.boolean)('is_deleted').default(false),
     discount: (0, pg_core_1.integer)('discount').default(0),
+    delivery_type: (0, exports.deliveryMethodEnum)('delivery_type').notNull().default('delivery'),
     deliveryFee: (0, pg_core_1.decimal)('delivery_fee', { precision: 10, scale: 2 }).default('0'),
     paymentMethod: (0, exports.paymentMethodEnum)('payment_method').notNull().default('cash'),
     paymentStatus: (0, exports.paymentStatusEnum)('payment_status')

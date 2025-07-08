@@ -19,11 +19,13 @@ export declare class OrdersController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        comment: string;
         status: "new" | "confirmed" | "preparing" | "ready_for_pickup" | "out_for_delivery" | "delivered" | "cancelled";
         totalPrice: string;
         subtotalPrice: string;
         isDeleted: boolean;
         discount: number;
+        delivery_type: "delivery" | "pickup";
         deliveryFee: string;
         paymentMethod: "cash" | "card" | "online";
         paymentStatus: "pending" | "paid" | "failed" | "refunded";
@@ -131,11 +133,13 @@ export declare class OrdersController {
     update(id: string, updateOrderDto: UpdateOrderDto): Promise<{
         id: number;
         address: string;
+        comment: string;
         status: "new" | "confirmed" | "preparing" | "ready_for_pickup" | "out_for_delivery" | "delivered" | "cancelled";
         totalPrice: string;
         subtotalPrice: string;
         isDeleted: boolean;
         discount: number;
+        delivery_type: "delivery" | "pickup";
         deliveryFee: string;
         paymentMethod: "cash" | "card" | "online";
         paymentStatus: "pending" | "paid" | "failed" | "refunded";
@@ -157,11 +161,13 @@ export declare class OrdersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            comment: string;
             status: "new" | "confirmed" | "preparing" | "ready_for_pickup" | "out_for_delivery" | "delivered" | "cancelled";
             totalPrice: string;
             subtotalPrice: string;
             isDeleted: boolean;
             discount: number;
+            delivery_type: "delivery" | "pickup";
             deliveryFee: string;
             paymentMethod: "cash" | "card" | "online";
             paymentStatus: "pending" | "paid" | "failed" | "refunded";

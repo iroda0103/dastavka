@@ -49,7 +49,7 @@ let OrdersController = class OrdersController {
 };
 exports.OrdersController = OrdersController;
 __decorate([
-    (0, common_1.UseGuards)(new auth_guard_1.HasRole(['admin', 'client'])),
+    (0, common_1.UseGuards)(),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

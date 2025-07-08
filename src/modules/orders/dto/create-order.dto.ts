@@ -19,19 +19,36 @@ export enum OrderStatus {
   CANCEL = 'cancel',
 }
 
+export enum PaymentMethod {
+  CASH = 'cash',
+  CARD = 'card',
+  ONLINE = 'online',
+}
+export enum DeliveryMethod {
+  DELIVERY = 'delivery',
+  CARD = 'pickup'
+}
 export class CreateOrderDto {
   @IsString()
   address: string;
 
   @IsNumber()
   @IsInt()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   driverId: number;
+
+  @IsEnum(['card','online','cash'])
+  @IsNotEmpty()
+  paymentMethod: PaymentMethod
 
   @IsNumber()
   @IsInt()
   @IsNotEmpty()
   clientId: number;
+
+  @IsEnum(['delivery','pickup'])
+  @IsNotEmpty()
+  deliveryMethod:DeliveryMethod
 
   @IsNumber()
   @IsInt()
@@ -59,8 +76,12 @@ export class CreateOrderDto {
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   @IsOptional()
-  @Type(() => Number) // Transform string input to number
+  @Type(() => Number) 
   deliveryFee: number;
+
+  @IsString()
+  @IsOptional()
+  comment: string;
 }
 
 export class CreateOrderItemDto {

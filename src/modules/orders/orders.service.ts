@@ -27,6 +27,9 @@ export class OrdersService {
       const {
         address,
         driverId,
+        paymentMethod,
+        deliveryMethod,
+        comment,
         clientId,
         restaurantId,
         items,
@@ -69,6 +72,9 @@ export class OrdersService {
           driverId,
           clientId,
           restaurantId,
+          paymentMethod,
+          deliveryMethod,
+          comment,
           subtotalPrice: subtotalPrice.toString(),
           totalPrice: totalPrice.toString(),
         };
@@ -76,6 +82,9 @@ export class OrdersService {
         // Add optional fields if provided in the DTO
         if (createOrderDto.status) {
           orderValues.status = createOrderDto.status;
+        }
+         if (createOrderDto.paymentMethod) {
+          orderValues.payment_method = createOrderDto.paymentMethod;
         }
 
         if (createOrderDto.deliveryFee !== undefined) {

@@ -2,6 +2,7 @@ export declare const userRoleEnum: import("drizzle-orm/pg-core").PgEnum<["client
 export declare const restaurantCategoryEnum: import("drizzle-orm/pg-core").PgEnum<["fast_food", "milliy_taom", "pizza", "burger"]>;
 export declare const orderStatusEnum: import("drizzle-orm/pg-core").PgEnum<["new", "confirmed", "preparing", "ready_for_pickup", "out_for_delivery", "delivered", "cancelled"]>;
 export declare const paymentMethodEnum: import("drizzle-orm/pg-core").PgEnum<["cash", "card", "online"]>;
+export declare const deliveryMethodEnum: import("drizzle-orm/pg-core").PgEnum<["delivery", "pickup"]>;
 export declare const paymentStatusEnum: import("drizzle-orm/pg-core").PgEnum<["pending", "paid", "failed", "refunded"]>;
 export declare const cities: import("drizzle-orm/pg-core").PgTableWithColumns<{
     name: "cities";
@@ -641,6 +642,23 @@ export declare const orders: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
+        comment: import("drizzle-orm/pg-core").PgColumn<{
+            name: "comment";
+            tableName: "orders";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
         status: import("drizzle-orm/pg-core").PgColumn<{
             name: "status";
             tableName: "orders";
@@ -722,6 +740,23 @@ export declare const orders: import("drizzle-orm/pg-core").PgTableWithColumns<{
             isAutoincrement: false;
             hasRuntimeDefault: false;
             enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        delivery_type: import("drizzle-orm/pg-core").PgColumn<{
+            name: "delivery_type";
+            tableName: "orders";
+            dataType: "string";
+            columnType: "PgEnumColumn";
+            data: "delivery" | "pickup";
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: ["delivery", "pickup"];
             baseColumn: never;
             identity: undefined;
             generated: undefined;
@@ -1757,6 +1792,23 @@ export declare const schema: {
                 identity: undefined;
                 generated: undefined;
             }, {}, {}>;
+            comment: import("drizzle-orm/pg-core").PgColumn<{
+                name: "comment";
+                tableName: "orders";
+                dataType: "string";
+                columnType: "PgText";
+                data: string;
+                driverParam: string;
+                notNull: false;
+                hasDefault: false;
+                isPrimaryKey: false;
+                isAutoincrement: false;
+                hasRuntimeDefault: false;
+                enumValues: [string, ...string[]];
+                baseColumn: never;
+                identity: undefined;
+                generated: undefined;
+            }, {}, {}>;
             status: import("drizzle-orm/pg-core").PgColumn<{
                 name: "status";
                 tableName: "orders";
@@ -1838,6 +1890,23 @@ export declare const schema: {
                 isAutoincrement: false;
                 hasRuntimeDefault: false;
                 enumValues: undefined;
+                baseColumn: never;
+                identity: undefined;
+                generated: undefined;
+            }, {}, {}>;
+            delivery_type: import("drizzle-orm/pg-core").PgColumn<{
+                name: "delivery_type";
+                tableName: "orders";
+                dataType: "string";
+                columnType: "PgEnumColumn";
+                data: "delivery" | "pickup";
+                driverParam: string;
+                notNull: true;
+                hasDefault: true;
+                isPrimaryKey: false;
+                isAutoincrement: false;
+                hasRuntimeDefault: false;
+                enumValues: ["delivery", "pickup"];
                 baseColumn: never;
                 identity: undefined;
                 generated: undefined;
