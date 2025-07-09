@@ -17,7 +17,7 @@ import * as bcrypt from 'bcryptjs';
 export class RestaurantsService {
   private readonly logger = new Logger(RestaurantsService.name);
 
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly databaseService: DatabaseService) { }
 
   async create(createRestaurantDto: CreateRestaurantDto) {
     this.logger.log('Creating new restaurant');
@@ -116,6 +116,65 @@ export class RestaurantsService {
 
       return {
         data: restaurantsList,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch restaurants: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `Failed to fetch restaurants: ${error.message}`,
+      );
+    }
+  }
+  async findAllWithCategory(search?: string, cityFilter?: number): Promise<any> {
+    try {
+      // Build where conditions
+      const conditions = [];
+      if (search) {
+        conditions.push(ilike(restaurants.name, `%${search}%`));
+      }
+      if (cityFilter) {
+        conditions.push(eq(restaurants.cityId, cityFilter as number));
+      }
+
+      const whereClause =
+        conditions.length > 0 ? and(...conditions) : undefined;
+
+      // Get total count
+      const [{ count }] = await this.databaseService.db
+        .select({ count: sql<number>`count(*)` })
+        .from(restaurants)
+        .where(whereClause);
+
+      // Get restaurants with city information
+      const restaurantsList = await this.databaseService.db
+        .select({
+          id: restaurants.id,
+          name: restaurants.name,
+          phone: restaurants.phone,
+          image: restaurants.image,
+          address: restaurants.address,
+          category: restaurants.category,
+          cityId: restaurants.cityId,
+          createdAt: restaurants.createdAt,
+          updatedAt: restaurants.updatedAt,
+          city: {
+            id: cities.id,
+            name: cities.name,
+          },
+        })
+        .from(restaurants)
+        .leftJoin(cities, eq(restaurants.cityId, cities.id))
+        .where(whereClause)
+        .orderBy(desc(restaurants.createdAt));
+
+      this.logger.log(`Found ${restaurantsList.length} restaurants`);
+
+      const convertedResList = this.transformRestaurantList(restaurantsList);
+
+      return {
+        data: convertedResList,
       };
     } catch (error) {
       this.logger.error(
@@ -362,4 +421,45 @@ export class RestaurantsService {
       );
     }
   }
+
+
+  private transformRestaurantList(data) {
+    const categoryMap = new Map();
+    let categoryId = 1;
+
+    console.log('data', data);
+
+    data.forEach((restaurant) => {
+      const categoryName =
+        restaurant.category.charAt(0).toUpperCase() +
+        restaurant.category.slice(1);
+
+      if (!categoryMap.has(categoryName)) {
+        categoryMap.set(categoryName, {
+          id: categoryId++,
+          category: categoryName,
+          restaurants: [],
+        });
+      }
+
+      const restaurantData = {
+        id: restaurant.id,
+        name: restaurant.name,
+        phone: restaurant.phone,
+        image: restaurant.image,
+        address: restaurant.address,
+        cityId: restaurant.cityId,
+        createdAt: restaurant.createdAt,
+        updatedAt: restaurant.updatedAt,
+        city: restaurant.city,
+      };
+
+      categoryMap.get(categoryName).restaurants.push(restaurantData);
+    });
+
+    return Array.from(categoryMap.values());
+  }
+
 }
+
+

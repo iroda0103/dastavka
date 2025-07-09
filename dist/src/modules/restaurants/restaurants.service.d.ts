@@ -22,6 +22,7 @@ export declare class RestaurantsService {
     }>;
     private buildCreateData;
     findAll(search?: string, cityFilter?: number): Promise<any>;
+    findAllWithCategory(search?: string, cityFilter?: number): Promise<any>;
     findOne(id: number): Promise<{
         id: number;
         name: string;
@@ -83,4 +84,5 @@ export declare class RestaurantsService {
             totalPages: number;
         };
     }>;
+    private transformRestaurantList;
 }

@@ -25,8 +25,10 @@ let RestaurantsController = class RestaurantsController {
         return this.restaurantsService.create(createRestaurantDto);
     }
     async findAll(search, cityFilter) {
-        console.log('cityFilter', search);
         return this.restaurantsService.findAll(search, cityFilter);
+    }
+    async findAllWithCategory(search, cityFilter) {
+        return this.restaurantsService.findAllWithCategory(search, cityFilter);
     }
     async findOne(id) {
         return this.restaurantsService.findOne(+id);
@@ -55,6 +57,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Number]),
     __metadata("design:returntype", Promise)
 ], RestaurantsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('/category'),
+    __param(0, (0, common_1.Query)('search')),
+    __param(1, (0, common_1.Query)('cityFilter')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number]),
+    __metadata("design:returntype", Promise)
+], RestaurantsController.prototype, "findAllWithCategory", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -18,7 +18,7 @@ import { Restaurant } from './entities/restaurant.entity';
 
 @Controller('restaurants')
 export class RestaurantsController {
-  constructor(private readonly restaurantsService: RestaurantsService) {}
+  constructor(private readonly restaurantsService: RestaurantsService) { }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -33,8 +33,15 @@ export class RestaurantsController {
     @Query('search') search: string,
     @Query('cityFilter') cityFilter: number,
   ) {
-    console.log('cityFilter', search);
     return this.restaurantsService.findAll(search, cityFilter);
+  }
+
+  @Get('/category')
+  async findAllWithCategory(
+    @Query('search') search: string,
+    @Query('cityFilter') cityFilter: number,
+  ) {
+    return this.restaurantsService.findAllWithCategory(search, cityFilter);
   }
 
   @Get(':id')

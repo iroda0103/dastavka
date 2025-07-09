@@ -7,6 +7,7 @@ export declare class RestaurantsController {
     constructor(restaurantsService: RestaurantsService);
     create(createRestaurantDto: CreateRestaurantDto): Promise<Restaurant>;
     findAll(search: string, cityFilter: number): Promise<any>;
+    findAllWithCategory(search: string, cityFilter: number): Promise<any>;
     findOne(id: string): Promise<Restaurant>;
     update(id: string, updateRestaurantDto: UpdateRestaurantDto): Promise<Restaurant>;
     remove(id: string): Promise<void>;

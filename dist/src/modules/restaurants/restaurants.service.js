@@ -101,6 +101,51 @@ let RestaurantsService = RestaurantsService_1 = class RestaurantsService {
             throw new common_1.BadRequestException(`Failed to fetch restaurants: ${error.message}`);
         }
     }
+    async findAllWithCategory(search, cityFilter) {
+        try {
+            const conditions = [];
+            if (search) {
+                conditions.push((0, drizzle_orm_1.ilike)(schema_1.restaurants.name, `%${search}%`));
+            }
+            if (cityFilter) {
+                conditions.push((0, drizzle_orm_1.eq)(schema_1.restaurants.cityId, cityFilter));
+            }
+            const whereClause = conditions.length > 0 ? (0, drizzle_orm_1.and)(...conditions) : undefined;
+            const [{ count }] = await this.databaseService.db
+                .select({ count: (0, drizzle_orm_1.sql) `count(*)` })
+                .from(schema_1.restaurants)
+                .where(whereClause);
+            const restaurantsList = await this.databaseService.db
+                .select({
+                id: schema_1.restaurants.id,
+                name: schema_1.restaurants.name,
+                phone: schema_1.restaurants.phone,
+                image: schema_1.restaurants.image,
+                address: schema_1.restaurants.address,
+                category: schema_1.restaurants.category,
+                cityId: schema_1.restaurants.cityId,
+                createdAt: schema_1.restaurants.createdAt,
+                updatedAt: schema_1.restaurants.updatedAt,
+                city: {
+                    id: schema_1.cities.id,
+                    name: schema_1.cities.name,
+                },
+            })
+                .from(schema_1.restaurants)
+                .leftJoin(schema_1.cities, (0, drizzle_orm_1.eq)(schema_1.restaurants.cityId, schema_1.cities.id))
+                .where(whereClause)
+                .orderBy((0, drizzle_orm_1.desc)(schema_1.restaurants.createdAt));
+            this.logger.log(`Found ${restaurantsList.length} restaurants`);
+            const convertedResList = this.transformRestaurantList(restaurantsList);
+            return {
+                data: convertedResList,
+            };
+        }
+        catch (error) {
+            this.logger.error(`Failed to fetch restaurants: ${error.message}`, error.stack);
+            throw new common_1.BadRequestException(`Failed to fetch restaurants: ${error.message}`);
+        }
+    }
     async findOne(id) {
         this.logger.log(`Fetching restaurant with ID: ${id}`);
         try {
@@ -278,6 +323,35 @@ let RestaurantsService = RestaurantsService_1 = class RestaurantsService {
             this.logger.error(`Failed to fetch restaurants by city: ${error.message}`, error.stack);
             throw new common_1.BadRequestException(`Failed to fetch restaurants by city: ${error.message}`);
         }
+    }
+    transformRestaurantList(data) {
+        const categoryMap = new Map();
+        let categoryId = 1;
+        console.log('data', data);
+        data.forEach((restaurant) => {
+            const categoryName = restaurant.category.charAt(0).toUpperCase() +
+                restaurant.category.slice(1);
+            if (!categoryMap.has(categoryName)) {
+                categoryMap.set(categoryName, {
+                    id: categoryId++,
+                    category: categoryName,
+                    restaurants: [],
+                });
+            }
+            const restaurantData = {
+                id: restaurant.id,
+                name: restaurant.name,
+                phone: restaurant.phone,
+                image: restaurant.image,
+                address: restaurant.address,
+                cityId: restaurant.cityId,
+                createdAt: restaurant.createdAt,
+                updatedAt: restaurant.updatedAt,
+                city: restaurant.city,
+            };
+            categoryMap.get(categoryName).restaurants.push(restaurantData);
+        });
+        return Array.from(categoryMap.values());
     }
 };
 exports.RestaurantsService = RestaurantsService;
