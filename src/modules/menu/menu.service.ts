@@ -75,7 +75,7 @@ export class MenuService {
     this.logger.log(`Finding all products for restaurant ID: ${restaurantId}`);
 
     try {
-      const restaurantProducts = await this.databaseService.db
+      let restaurantProducts = await this.databaseService.db
         .select({
           id: menu.id,
           name: menu.name,
@@ -88,12 +88,13 @@ export class MenuService {
         .from(menu)
         .where(eq(menu.restaurantId, restaurantId));
 
-      if (!restaurantProducts || restaurantProducts.length === 0) {
-        this.logger.warn(
-          `No products found for restaurant ID: ${restaurantId}`,
-        );
-        throw new NotFoundException(`No products found for the restaurant`);
-      }
+      // if (!restaurantProducts || restaurantProducts.length === 0) {
+      //   this.logger.warn(
+      //     `No products found for restaurant ID: ${restaurantId}`,
+      //   );
+      //   throw new NotFoundException(`No products found for the restaurant`);
+      // }
+      // restaurantProducts=restaurantProducts.length>0?restaurantProducts:[]
 
       this.logger.log(
         `Found ${restaurantProducts.length} products for restaurant ID: ${restaurantId}`,

@@ -55,7 +55,7 @@ let MenuService = MenuService_1 = class MenuService {
     async findAll(restaurantId) {
         this.logger.log(`Finding all products for restaurant ID: ${restaurantId}`);
         try {
-            const restaurantProducts = await this.databaseService.db
+            let restaurantProducts = await this.databaseService.db
                 .select({
                 id: schema_1.menu.id,
                 name: schema_1.menu.name,
@@ -67,10 +67,6 @@ let MenuService = MenuService_1 = class MenuService {
             })
                 .from(schema_1.menu)
                 .where((0, drizzle_orm_1.eq)(schema_1.menu.restaurantId, restaurantId));
-            if (!restaurantProducts || restaurantProducts.length === 0) {
-                this.logger.warn(`No products found for restaurant ID: ${restaurantId}`);
-                throw new common_1.NotFoundException(`No products found for the restaurant`);
-            }
             this.logger.log(`Found ${restaurantProducts.length} products for restaurant ID: ${restaurantId}`);
             return restaurantProducts;
         }

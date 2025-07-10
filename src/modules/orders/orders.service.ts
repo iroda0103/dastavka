@@ -10,7 +10,7 @@ import { DatabaseService } from '../../database/database.service';
 import { orderItems, orders, users, restaurants } from '../../database/schema';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 
-@Injectable()
+@Injectable() 
 export class OrdersService {
   private readonly logger = new Logger(OrdersService.name);
 
