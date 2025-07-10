@@ -36,7 +36,7 @@ export class RestaurantsController {
     return this.restaurantsService.findAll(search, cityFilter);
   }
 
-  @Get('/category')
+  @Get('/category/group')
   async findAllWithCategory(
     @Query('search') search: string,
     @Query('cityFilter') cityFilter: number,

@@ -58,7 +58,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RestaurantsController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('/category'),
+    (0, common_1.Get)('/category/group'),
     __param(0, (0, common_1.Query)('search')),
     __param(1, (0, common_1.Query)('cityFilter')),
     __metadata("design:type", Function),
