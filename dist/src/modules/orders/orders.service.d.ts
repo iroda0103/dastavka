@@ -112,8 +112,6 @@ export declare class OrdersService {
             id: number;
             name: string;
             phone: string;
-            address: string;
-            role: "admin" | "restaurant" | "client" | "driver" | "chef";
         };
         driver: {
             id: number;

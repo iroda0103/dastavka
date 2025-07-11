@@ -10,11 +10,11 @@ import { DatabaseService } from '../../database/database.service';
 import { orderItems, orders, users, restaurants } from '../../database/schema';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 
-@Injectable() 
+@Injectable()
 export class OrdersService {
   private readonly logger = new Logger(OrdersService.name);
 
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly databaseService: DatabaseService) { }
 
   async create(createOrderDto: CreateOrderDto) {
     this.logger.log(
@@ -83,7 +83,7 @@ export class OrdersService {
         if (createOrderDto.status) {
           orderValues.status = createOrderDto.status;
         }
-         if (createOrderDto.paymentMethod) {
+        if (createOrderDto.paymentMethod) {
           orderValues.payment_method = createOrderDto.paymentMethod;
         }
 
@@ -320,12 +320,13 @@ export class OrdersService {
           role: users.role,
         },
         // Restaurant data - using aliased join
-        restaurant: { 
+        restaurant: {
           id: orders.restaurantId,
-          name: users.name,
-          phone: users.phone,
-          address: users.address,
-          role: users.role,
+          name: restaurants.name,
+          phone: restaurants.phone,
+
+          // address: re.address,
+          // role: users.role,
         },
         // Driver data - will use a later join
         driverId: orders.driverId,
@@ -363,6 +364,8 @@ export class OrdersService {
 
   async update(id: number, updateOrderDto: UpdateOrderDto) {
     try {
+            console.log('start test',updateOrderDto);
+
       // First check if the order exists
       const existingOrder = await this.databaseService.db
         .select()
@@ -379,9 +382,11 @@ export class OrdersService {
       const updateValues: {
         address?: string;
         status?: string;
+        driverId?: number,
         discount?: number;
         deliveryFee?: number;
       } = {};
+      console.log('test',updateOrderDto);
 
       // Only update the fields that are provided
       if (updateOrderDto.address !== undefined) {
@@ -391,6 +396,7 @@ export class OrdersService {
       if (updateOrderDto.status !== undefined) {
         updateValues.status = updateOrderDto.status;
       }
+      console.log('finish',updateOrderDto,updateValues);
 
       if (updateOrderDto.discount !== undefined) {
         updateValues.discount = updateOrderDto.discount;
@@ -532,7 +538,7 @@ export class OrdersService {
       where: and(eq(users.id, driverId), eq(users.role, 'driver')),
     });
 
-    if (!driver) {
+    if (!driver && driverId) {
       throw new NotFoundException(
         `Driver with ID ${driverId} not found or is not a driver`,
       );

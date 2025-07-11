@@ -228,10 +228,8 @@ let OrdersService = OrdersService_1 = class OrdersService {
             },
             restaurant: {
                 id: schema_1.orders.restaurantId,
-                name: schema_1.users.name,
-                phone: schema_1.users.phone,
-                address: schema_1.users.address,
-                role: schema_1.users.role,
+                name: schema_1.restaurants.name,
+                phone: schema_1.restaurants.phone,
             },
             driverId: schema_1.orders.driverId,
         })
@@ -259,6 +257,7 @@ let OrdersService = OrdersService_1 = class OrdersService {
     }
     async update(id, updateOrderDto) {
         try {
+            console.log('start test', updateOrderDto);
             const existingOrder = await this.databaseService.db
                 .select()
                 .from(schema_1.orders)
@@ -268,12 +267,14 @@ let OrdersService = OrdersService_1 = class OrdersService {
                 throw new common_1.NotFoundException(`Order with ID ${id} not found`);
             }
             const updateValues = {};
+            console.log('test', updateOrderDto);
             if (updateOrderDto.address !== undefined) {
                 updateValues.address = updateOrderDto.address;
             }
             if (updateOrderDto.status !== undefined) {
                 updateValues.status = updateOrderDto.status;
             }
+            console.log('finish', updateOrderDto, updateValues);
             if (updateOrderDto.discount !== undefined) {
                 updateValues.discount = updateOrderDto.discount;
             }
@@ -372,7 +373,7 @@ let OrdersService = OrdersService_1 = class OrdersService {
         const driver = await this.databaseService.db.query.users.findFirst({
             where: (0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema_1.users.id, driverId), (0, drizzle_orm_1.eq)(schema_1.users.role, 'driver')),
         });
-        if (!driver) {
+        if (!driver && driverId) {
             throw new common_1.NotFoundException(`Driver with ID ${driverId} not found or is not a driver`);
         }
         const client = await this.databaseService.db.query.users.findFirst({

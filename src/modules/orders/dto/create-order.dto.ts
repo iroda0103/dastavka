@@ -11,12 +11,21 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
+// export enum OrderStatus {
+//   NEW = 'new',
+//   PROCESS = 'process',
+//   ON_WAY = 'on-way',
+//   DELIVERED = 'delivered',
+//   CANCEL = 'cancel',
+// }
 export enum OrderStatus {
   NEW = 'new',
-  PROCESS = 'process',
-  ON_WAY = 'on-way',
+  CONFIRMED = 'confirmed',
+  PREPARING = 'preparing',
+  READY_FOR_PICKUP = 'ready_for_pickup',
+  OUT_FOR_DELIVERY = 'out_for_delivery',
   DELIVERED = 'delivered',
-  CANCEL = 'cancel',
+  CANCELLED = 'cancelled',
 }
 
 export enum PaymentMethod {
@@ -34,6 +43,7 @@ export class CreateOrderDto {
 
   @IsNumber()
   @IsInt()
+  @IsOptional()
   // @IsNotEmpty()
   driverId: number;
 
@@ -61,8 +71,8 @@ export class CreateOrderDto {
   @IsNotEmpty()
   items: CreateOrderItemDto[];
 
-  @IsEnum(['new', 'process', 'on-way', 'delivered', 'cancel'], {
-    message: 'Status must be one of: new, process, on-way, delivered, cancel',
+  @IsEnum(['new', 'confirmed', 'preparing', 'ready_for_pickup', 'out_for_delivery', 'delivered', 'cancelled'], {
+    message: 'Status must be one of: new, confirmed, preparing,ready_for_pickup,out_for_delivery,delivered,cancelled',
   })
   @IsOptional()
   status: OrderStatus;

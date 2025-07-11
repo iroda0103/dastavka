@@ -15,10 +15,12 @@ const class_transformer_1 = require("class-transformer");
 var OrderStatus;
 (function (OrderStatus) {
     OrderStatus["NEW"] = "new";
-    OrderStatus["PROCESS"] = "process";
-    OrderStatus["ON_WAY"] = "on-way";
+    OrderStatus["CONFIRMED"] = "confirmed";
+    OrderStatus["PREPARING"] = "preparing";
+    OrderStatus["READY_FOR_PICKUP"] = "ready_for_pickup";
+    OrderStatus["OUT_FOR_DELIVERY"] = "out_for_delivery";
     OrderStatus["DELIVERED"] = "delivered";
-    OrderStatus["CANCEL"] = "cancel";
+    OrderStatus["CANCELLED"] = "cancelled";
 })(OrderStatus || (exports.OrderStatus = OrderStatus = {}));
 var PaymentMethod;
 (function (PaymentMethod) {
@@ -41,6 +43,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], CreateOrderDto.prototype, "driverId", void 0);
 __decorate([
@@ -73,8 +76,8 @@ __decorate([
     __metadata("design:type", Array)
 ], CreateOrderDto.prototype, "items", void 0);
 __decorate([
-    (0, class_validator_1.IsEnum)(['new', 'process', 'on-way', 'delivered', 'cancel'], {
-        message: 'Status must be one of: new, process, on-way, delivered, cancel',
+    (0, class_validator_1.IsEnum)(['new', 'confirmed', 'preparing', 'ready_for_pickup', 'out_for_delivery', 'delivered', 'cancelled'], {
+        message: 'Status must be one of: new, confirmed, preparing,ready_for_pickup,out_for_delivery,delivered,cancelled',
     }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)

@@ -1,9 +1,11 @@
 export declare enum OrderStatus {
     NEW = "new",
-    PROCESS = "process",
-    ON_WAY = "on-way",
+    CONFIRMED = "confirmed",
+    PREPARING = "preparing",
+    READY_FOR_PICKUP = "ready_for_pickup",
+    OUT_FOR_DELIVERY = "out_for_delivery",
     DELIVERED = "delivered",
-    CANCEL = "cancel"
+    CANCELLED = "cancelled"
 }
 export declare enum PaymentMethod {
     CASH = "cash",
